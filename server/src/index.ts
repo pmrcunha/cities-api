@@ -32,7 +32,7 @@ const data = fetchAddresses();
 
 app.use(
   cors({
-    origin: "http://localhost:4200", // Angular app's URL
+    origin: "http://localhost", // Angular app's URL
   })
 );
 

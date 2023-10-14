@@ -5,6 +5,22 @@ services:
     build:
       context: .
       dockerfile: Dockerfile-server
-    container_name: addresses-container
+    container_name: addresses-service
     ports:
       - "8080:8080"
+    networks:
+      - app-network
+  addresses-dashboard:
+    build:
+      context: .
+      dockerfile: Dockerfile-client
+    container_name: addresses-dashboard
+    ports:
+      - "80:80" # Expose Nginx port 80 on host's port 3000
+    depends_on:
+      - addresses-service
+    networks:
+      - app-network
+networks:
+  app-network:
+    driver: bridge
