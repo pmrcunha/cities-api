@@ -130,6 +130,9 @@ app.get("/all-cities", requireAuth, (req: Request, res: Response) => {
   res.write("[");
 
   // Iterate over the addresses up to the specified limit and send each one as a buffer.
+  // NOTE: Here we of course have `data` fully in memory, but not the stringified version of all 100000 cities.
+  // And of course streaming addresses.json directly would be even more economical, but I'm pretending that it is a database.
+  // In a real-world scenario we could fetch the items in batches from the database and stream them to the response.
   let isFirstAddress = true;
   for (let i = 0; i < Math.min(data.length, limit); i++) {
     const address = data[i];

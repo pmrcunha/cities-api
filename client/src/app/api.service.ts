@@ -46,7 +46,7 @@ export class ApiService {
 
   pollCities(url: string): Observable<any> {
     return this.http.get<any>(url, {
-      headers: this.getAuthHeaders(), // Assuming you have this method for adding Bearer token headers
+      headers: this.getAuthHeaders(),
     });
   }
 
