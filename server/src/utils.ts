@@ -5,7 +5,7 @@ import type { AddressItem } from "./index.types";
 /** Loads and parses the addresses data from the provided JSON file. */
 export function fetchAddresses(): AddressItem[] {
   const rawData = fs.readFileSync(
-    path.join(__dirname, "../../addresses.json"),
+    path.join(__dirname, "../addresses.json"),
     "utf8"
   );
   return JSON.parse(rawData);

@@ -1,0 +1,10 @@
+version: "3"
+
+services:
+  addresses-service:
+    build:
+      context: .
+      dockerfile: Dockerfile-server
+    container_name: addresses-container
+    ports:
+      - "8080:8080"
