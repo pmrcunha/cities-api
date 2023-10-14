@@ -125,7 +125,8 @@ app.get("/all-cities", requireAuth, (req: Request, res: Response) => {
   // If not provided, default to the length of the data array.
   const limit = Number(req.query.limit) || data.length;
 
-  // Start by writing the opening bracket to the response buffer.
+  // We'll stream the data without ever holding it all in memory
+  // We start by writing the opening bracket to the response buffer
   res.write("[");
 
   // Iterate over the addresses up to the specified limit and send each one as a buffer.
