@@ -1,4 +1,5 @@
 import express, { Request, Response } from "express";
+import cors from "cors";
 import { v4 as uuidv4 } from "uuid";
 import { fork } from "child_process";
 import path from "path";
@@ -28,6 +29,12 @@ const resultsCache: Record<string, AddressItem[]> = {};
 // In a real-world scenario, we would use a database to store the data
 // Here we just read the data from the JSON file
 const data = fetchAddresses();
+
+app.use(
+  cors({
+    origin: "http://localhost:4200", // Angular app's URL
+  })
+);
 
 /** Make `baseUrl` available in every request. */
 app.use((req, res, next) => {
@@ -114,14 +121,19 @@ app.get("/area-result/:id", requireAuth, (req: Request, res: Response) => {
 app.get("/all-cities", requireAuth, (req: Request, res: Response) => {
   res.setHeader("Content-Type", "application/json");
 
-  // We'll stream the data without ever holding it all in memory
-  // We start by writing the opening bracket to the response buffer
+  // Capture the limit from the request query parameters.
+  // If not provided, default to the length of the data array.
+  const limit = Number(req.query.limit) || data.length;
+
+  // Start by writing the opening bracket to the response buffer.
   res.write("[");
 
-  // Iterate over the addresses and send each one as a buffer
+  // Iterate over the addresses up to the specified limit and send each one as a buffer.
   let isFirstAddress = true;
-  for (const address of data) {
-    // Convert address object to string and then to a buffer
+  for (let i = 0; i < Math.min(data.length, limit); i++) {
+    const address = data[i];
+
+    // Convert address object to string and then to a buffer.
     const addressBuffer = Buffer.from(
       (isFirstAddress ? "" : ",") + JSON.stringify(address)
     );
@@ -129,7 +141,7 @@ app.get("/all-cities", requireAuth, (req: Request, res: Response) => {
     isFirstAddress = false;
   }
 
-  // End the array and the response
+  // End the array and the response.
   res.end("]");
 });
 
