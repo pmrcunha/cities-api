@@ -1,5 +1,7 @@
 # Cities API challenge
 
+![Code Challenge](https://img.shields.io/badge/kind-code_challenge-blue)
+
 The script `index.js` uses a local api to perform various operations on a set of cities. Your task is to implement an api so that the script runs successfully all the way to the end.
 
 Run `npm install` and `npm run start` to start the script.
